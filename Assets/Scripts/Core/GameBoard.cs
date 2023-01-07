@@ -114,11 +114,7 @@ public class GameBoard : MonoBehaviour
                 return false;
             }
         }
-
-        foreach (var t in _tiles)
-        {
-            t.ShowPath();
-        }
+        
 
         return true;
     }

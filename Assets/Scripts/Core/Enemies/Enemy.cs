@@ -45,6 +45,11 @@ public class Enemy : GameBehavior
         transform.localPosition = tile.transform.localPosition;
         _tileFrom = tile;
         _tileTo = tile.NextTileOnPath;
+        if (_tileTo == null)
+        {
+            Debug.Log("Error");
+        }
+
         _progress = 0f;
         PrepareIntro();
     }
@@ -114,6 +119,7 @@ public class Enemy : GameBehavior
     public void TakeDamage(float damage)
     {
         Health -= damage;
+        _view.UpdateHealthAmount(Health);
     }
 
     public void SetSpeed(float factor)

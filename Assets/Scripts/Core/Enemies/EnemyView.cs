@@ -1,7 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using Core.Enemies;
+using UnityEngine;
 
 public abstract class EnemyView : MonoBehaviour
 {
+    [SerializeField] private HealthBar _healthBar;
+    [SerializeField] private SkinnedMeshRenderer _skinnedMeshRenderer;
+    
+    
     public bool IsInited { get; protected set; }
 
     protected Animator _animator;
@@ -11,14 +17,18 @@ public abstract class EnemyView : MonoBehaviour
 
     public float SpeedFactor => _animator.speed;
 
+
     public virtual void Init(Enemy enemy)
     {
+        _defaultColor = _skinnedMeshRenderer.material.color;
         _animator = GetComponent<Animator>();
+        _healthBar.Initialize(enemy.Health);
         _enemy = enemy;
     }
 
     public virtual void Die()
     {
+        _healthBar.Hide();
         _animator.SetBool(DIED_KEY, true);
     }
 
@@ -31,5 +41,27 @@ public abstract class EnemyView : MonoBehaviour
     {
         IsInited = true;
         GetComponent<TargetPoint>().IsEnabled = true;
+    }
+
+    private Coroutine _changeColorOnDamageCoroutine;
+    private Color _defaultColor;
+
+    public void UpdateHealthAmount(float healthAmount)
+    {
+        _healthBar.UpdateBar(healthAmount);
+        if (_changeColorOnDamageCoroutine != null)
+        { 
+            StopCoroutine(_changeColorOnDamageCoroutine);
+        }
+        
+        _changeColorOnDamageCoroutine = StartCoroutine(UpdateMeshColor());
+        
+    }
+
+    private IEnumerator UpdateMeshColor()
+    {
+        _skinnedMeshRenderer.material.color = Color.red;
+        yield return new WaitForSeconds(1);
+        _skinnedMeshRenderer.material.color = _defaultColor;
     }
 }

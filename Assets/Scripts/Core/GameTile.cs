@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class GameTile : MonoBehaviour
 {
-    [SerializeField]
-    private Transform _arrow;
-
     private GameTile _north, _east, _south, _west, _nextOnPath;
 
     private int _distance;
@@ -87,20 +84,6 @@ public class GameTile : MonoBehaviour
     public GameTile GrowPathEast() => GrowPathTo(_east, Direction.West);
     public GameTile GrowPathSouth() => GrowPathTo(_south, Direction.North);
     public GameTile GrowPathWest() => GrowPathTo(_west, Direction.East);
-
-    public void ShowPath()
-    {
-        if (_distance == 0)
-        {
-            _arrow.gameObject.SetActive(false);
-            return;
-        }
-        _arrow.gameObject.SetActive(true);
-        _arrow.localRotation =
-            _nextOnPath == _north ? _northRotation :
-            _nextOnPath == _east ? _eastRotation :
-            _nextOnPath == _south ? _southRotation :
-            _westRotation;
-    }
+    
 }
 
