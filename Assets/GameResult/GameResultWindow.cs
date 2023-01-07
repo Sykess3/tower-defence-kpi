@@ -7,12 +7,15 @@ namespace GameResult
     [RequireComponent(typeof(Canvas))]
     public class GameResultWindow : MonoBehaviour
     {
-        [SerializeField]
-        private GameResultIntroAnimation _introAnimation;
+        //[SerializeField]
+        //private GameResultIntroAnimation _introAnimation;
         [SerializeField]
         private Button _restartButton;
         [SerializeField]
         private Button _quitButton;
+        [SerializeField] private Image _resultImage;
+        [SerializeField] private Sprite _win;
+        [SerializeField] private Sprite _lose;
 
         private Canvas _canvas;
 
@@ -36,22 +39,36 @@ namespace GameResult
             _quitButton.interactable = false;
             
             _canvas.enabled = true;
-            await _introAnimation.Play(result);
+            EnableResult(result);
+            //await _introAnimation.Play(result);
 
             _restartButton.interactable = true;
             _quitButton.interactable = true;
+        }
+
+        private void EnableResult(GameResultType result)
+        {
+            _resultImage.gameObject.SetActive(true);
+            _resultImage.sprite = result == GameResultType.Defeat
+                ? _lose
+                : _win;
         }
 
         private void OnRestartClicked()
         {
             _onRestart?.Invoke();
             _canvas.enabled = false;
+            DisableResult();
         }
 
         private void OnQuitClicked()
         {
             _onQuit?.Invoke();
             _canvas.enabled = false;
+            DisableResult();
         }
+
+        private void DisableResult() => 
+            _resultImage.gameObject.SetActive(false);
     }
 }

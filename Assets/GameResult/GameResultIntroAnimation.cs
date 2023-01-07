@@ -15,30 +15,30 @@ namespace GameResult
         private PlayableDirector _director;
         private TaskCompletionSource<bool> _playAwater;
 
-        private void Awake()
-        {
-            _director = GetComponent<PlayableDirector>();
-        }
+        //private void Awake()
+        //{
+        //    _director = GetComponent<PlayableDirector>();
+        //}
 
-        public async Task Play(GameResultType result)
-        {
-            foreach (var s in _settings)
-            {
-                s.Object.SetActive(s.Type == result);
-            }
-           
-            _playAwater = new TaskCompletionSource<bool>();
-            _director.stopped -= OnTimelineFinished;
-            _director.stopped += OnTimelineFinished;
-            
-            _director.Play();
-            await _playAwater.Task;
-        }
+        //public async Task Play(GameResultType result)
+        //{
+        //    foreach (var s in _settings)
+        //    {
+        //        s.Object.SetActive(s.Type == result);
+        //    }
+        //   
+        //    _playAwater = new TaskCompletionSource<bool>();
+        //    _director.stopped -= OnTimelineFinished;
+        //    _director.stopped += OnTimelineFinished;
+        //    
+        //    _director.Play();
+        //    await _playAwater.Task;
+        //}
 
-        private void OnTimelineFinished(PlayableDirector _)
-        {
-            _playAwater.TrySetResult(true);
-        }
+        //private void OnTimelineFinished(PlayableDirector _)
+        //{
+        //    _playAwater.TrySetResult(true);
+        //}
         
         [Serializable]
         private class GameResultSetting
