@@ -12,4 +12,6 @@ public class EnemyConfig
     public FloatRange Speed = new FloatRange(1f);
     [FloatRangeSlider(10f, 1000f)]
     public FloatRange Health = new FloatRange(100f);
+
+    public int KillReward;
 }

@@ -61,7 +61,7 @@ public abstract class EnemyView : MonoBehaviour
     private IEnumerator UpdateMeshColor()
     {
         _skinnedMeshRenderer.material.color = Color.red;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         _skinnedMeshRenderer.material.color = _defaultColor;
     }
 }

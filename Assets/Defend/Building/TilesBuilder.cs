@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Core.Pause;
+using DefaultNamespace;
 using UnityEngine;
 
 public class TilesBuilder : MonoBehaviour
@@ -53,6 +54,7 @@ public class TilesBuilder : MonoBehaviour
 
     private void ProcessBuilding()
     {
+
         var plane = new Plane(Vector3.up, Vector3.zero);
         if (plane.Raycast(TouchRay, out var position))
         {
@@ -62,9 +64,14 @@ public class TilesBuilder : MonoBehaviour
         if (IsPointerUp())
         {
             var tile = _gameBoard.GetTile(TouchRay);
+            int cost = BuildButton.GetCost(_pendingTile.Type);
             if (tile == null || _gameBoard.TryBuild(tile, _pendingTile) == false)
             {
                 Destroy(_pendingTile.gameObject);
+            }
+            else
+            {
+                PlayerWallet.Decrease(cost);
             }
 
             _pendingTile = null;

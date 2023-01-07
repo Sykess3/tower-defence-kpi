@@ -5,9 +5,8 @@ using UnityEngine;
 
 public class GameBoard : MonoBehaviour
 {
-    [SerializeField]
-    private GameTile _tilePrefab;
-    
+    [SerializeField] private GameTile _tilePrefab;
+
     private GameTile[] _tiles;
 
     private readonly Queue<GameTile> _searchFrontier = new Queue<GameTile>();
@@ -20,7 +19,7 @@ public class GameBoard : MonoBehaviour
     private BoardData _boardData;
     private byte X => _boardData.X;
     private byte Y => _boardData.Y;
-    
+
     public void Initialize(BoardData boardData, GameTileContentFactory contentFactory)
     {
         _boardData = boardData;
@@ -114,7 +113,7 @@ public class GameBoard : MonoBehaviour
                 return false;
             }
         }
-        
+
 
         return true;
     }
@@ -123,15 +122,65 @@ public class GameBoard : MonoBehaviour
     {
         tile.Content = content;
         _contentToUpdate.Add(content);
-        
-        if(content.Type == GameTileContentType.SpawnPoint)
+
+        if (content.Type == GameTileContentType.SpawnPoint)
             _spawnPoints.Add(tile);
     }
-    
+
     public bool TryBuild(GameTile tile, GameTileContent content)
     {
         if (tile.Content.Type != GameTileContentType.Empty)
             return false;
+
+        bool b = tile.North != null && tile.North.Content.Type == GameTileContentType.SpawnPoint;
+        bool b1 = tile.West != null && tile.West.Content.Type == GameTileContentType.SpawnPoint;
+        bool b2 = tile.East != null && tile.East.Content.Type == GameTileContentType.SpawnPoint;
+        bool b3 = tile.South != null && tile.South.Content.Type == GameTileContentType.SpawnPoint;
+        bool b4 = tile.South != null && tile.South.West != null && tile.South.West.Content.Type == GameTileContentType.SpawnPoint;
+        bool b5 = tile.South != null && tile.South.East != null && tile.South.East.Content.Type == GameTileContentType.SpawnPoint;
+        
+        bool b6 = tile.North != null && tile.North.East != null && tile.North.East.Content.Type == GameTileContentType.SpawnPoint;
+        bool b7 = tile.North != null && tile.North.West != null && tile.North.West.Content.Type == GameTileContentType.SpawnPoint;
+        if (b || b1 || b2 || b3 || b4 || b5 || b6 || b7)
+        {
+            tile.MarkRed();
+            return false;
+        }
+
+        if (content.Type == GameTileContentType.LaserTower || content.Type == GameTileContentType.MortarTower)
+        {
+            bool west = tile.West != null &&
+                        tile.West.Content.Type is GameTileContentType.LaserTower or GameTileContentType.MortarTower;
+            bool east = tile.East != null &&
+                        tile.East.Content.Type is GameTileContentType.LaserTower or GameTileContentType.MortarTower;
+            bool north = tile.North != null &&
+                         tile.North.Content.Type is GameTileContentType.LaserTower or GameTileContentType.MortarTower;
+            
+            bool northWest = (tile.North != null && tile.North.West != null) &&
+                             tile.North.West.Content.Type is GameTileContentType.LaserTower
+                                 or GameTileContentType.MortarTower;
+            
+            bool northEast = (tile.North != null && tile.North.East != null) &&
+                             tile.North.East.Content.Type is GameTileContentType.LaserTower
+                                 or GameTileContentType.MortarTower;
+            
+            bool south = tile.South != null &&
+                         tile.South.Content.Type is GameTileContentType.LaserTower or GameTileContentType.MortarTower;
+            
+            bool southWest = (tile.South != null && tile.South.West != null) &&
+                             tile.South.West.Content.Type is GameTileContentType.LaserTower
+                                 or GameTileContentType.MortarTower;
+            
+            bool southEast = (tile.South != null && tile.South.East != null) &&
+                             tile.South.East.Content.Type is GameTileContentType.LaserTower
+                                 or GameTileContentType.MortarTower;
+            
+            if (west || east || north || south || northWest || northEast ||  southEast || southWest)
+            {
+                tile.MarkRed();
+                return false;
+            }
+        }
 
         tile.Content = content;
         if (FindPaths() == false)
@@ -139,12 +188,12 @@ public class GameBoard : MonoBehaviour
             tile.Content = _contentFactory.Get(GameTileContentType.Empty);
             return false;
         }
-        
+
         _contentToUpdate.Add(content);
-        
-        if(content.Type == GameTileContentType.SpawnPoint)
+
+        if (content.Type == GameTileContentType.SpawnPoint)
             _spawnPoints.Add(tile);
-        
+
         return true;
     }
 
@@ -152,16 +201,16 @@ public class GameBoard : MonoBehaviour
     {
         if (tile.Content.Type <= GameTileContentType.Empty)
             return;
-        
+
         _contentToUpdate.Remove(tile.Content);
-        
-        if(tile.Content.Type == GameTileContentType.SpawnPoint)
+
+        if (tile.Content.Type == GameTileContentType.SpawnPoint)
             _spawnPoints.Remove(tile);
-        
+
         tile.Content = _contentFactory.Get(GameTileContentType.Empty);
         FindPaths();
     }
-    
+
     public GameTile GetTile(Ray ray)
     {
         RaycastHit hit;
@@ -174,6 +223,7 @@ public class GameBoard : MonoBehaviour
                 return _tiles[x + y * X];
             }
         }
+
         return null;
     }
 

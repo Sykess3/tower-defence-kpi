@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DefaultNamespace;
+using UnityEngine;
 
 public class Enemy : GameBehavior
 {
@@ -20,6 +21,7 @@ public class Enemy : GameBehavior
     private float _speed;
     private float _originalSpeed;
     private float _tempSpeedFactor;
+    private int _rewardForKilling;
 
     public float Scale { get; private set; }
     public float Health { get; private set; }
@@ -28,8 +30,9 @@ public class Enemy : GameBehavior
 
     private const float CHANGE_DIR_SPEED_MULTIPLIER = 0.8f;
 
-    public void Initialize(float scale, float pathOffset, float speed, float health)
+    public void Initialize(float scale, float pathOffset, float speed, float health, int rewardForKilling)
     {
+        _rewardForKilling = rewardForKilling;
         _originalSpeed = speed;
         _model.localScale = new Vector3(scale, scale, scale);
         _pathOffset = pathOffset;
@@ -47,7 +50,7 @@ public class Enemy : GameBehavior
         _tileTo = tile.NextTileOnPath;
         if (_tileTo == null)
         {
-            Debug.Log("Error");
+            _tileTo = tile.North;
         }
 
         _progress = 0f;
@@ -84,6 +87,7 @@ public class Enemy : GameBehavior
         }
         if (Health <= 0f)
         {
+            PlayerWallet.Increase(_rewardForKilling);
             DisableView();
             _view.Die();
             return false;

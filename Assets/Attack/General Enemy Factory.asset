@@ -22,11 +22,12 @@ MonoBehaviour:
       _min: -0.25
       _max: 0.25
     Speed:
-      _min: 2.7012658
-      _max: 4.341772
+      _min: 0.9501257
+      _max: 1.7984496
     Health:
       _min: 100
       _max: 438.35443
+    KillReward: 4
   _elien:
     Prefab: {fileID: 5567957360134411496, guid: 9e625070c194b444d9622adacf4f428b,
       type: 3}
@@ -37,11 +38,12 @@ MonoBehaviour:
       _min: -0.18227848
       _max: 0.18227848
     Speed:
-      _min: 1.5974684
-      _max: 2.5696201
+      _min: 1.0076528
+      _max: 1.7296417
     Health:
       _min: 225.31645
       _max: 551.1392
+    KillReward: 5
   _golem:
     Prefab: {fileID: 5567957360134411496, guid: 9b19805576d1f5e4db875a33f302d91f,
       type: 3}
@@ -53,10 +55,11 @@ MonoBehaviour:
       _max: 0.11139241
     Speed:
       _min: 0.6962025
-      _max: 1.8506329
+      _max: 1.5170825
     Health:
       _min: 567.6582
       _max: 780.69617
+    KillReward: 8
   _grenadier:
     Prefab: {fileID: 998669896641354974, guid: e3cd1b8fa5cb29e449c7db04f93ed05b, type: 3}
     Scale:
@@ -71,3 +74,4 @@ MonoBehaviour:
     Health:
       _min: 864.43036
       _max: 1000
+    KillReward: 25

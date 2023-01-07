@@ -15,16 +15,16 @@ MonoBehaviour:
   _spawnSequences:
   - _factory: {fileID: 11400000, guid: 8276d446d2d992b4f897ac3592aeb526, type: 2}
     _type: 2
-    _amount: 15
-    _cooldown: 0.25
+    _amount: 5
+    _cooldown: 1
   - _factory: {fileID: 11400000, guid: 8276d446d2d992b4f897ac3592aeb526, type: 2}
     _type: 0
     _amount: 10
-    _cooldown: 0.5
+    _cooldown: 2
   - _factory: {fileID: 11400000, guid: 8276d446d2d992b4f897ac3592aeb526, type: 2}
     _type: 1
     _amount: 10
-    _cooldown: 0.25
+    _cooldown: 2
   - _factory: {fileID: 11400000, guid: 8276d446d2d992b4f897ac3592aeb526, type: 2}
     _type: 3
     _amount: 1
