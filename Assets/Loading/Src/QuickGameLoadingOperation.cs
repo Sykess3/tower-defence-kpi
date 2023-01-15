@@ -24,7 +24,7 @@ namespace Loading
             
             var scene = SceneManager.GetSceneByName(Constants.Scenes.QUICK_GAME);
             var editorGame = scene.GetRoot<QuickGame>();
-            var environment = await ProjectContext.Instance.AssetProvider.LoadSceneAdditive("Sand");
+            var environment = await ProjectContext.Instance.AssetProvider.LoadSceneAdditive("Forest");
             onProgress?.Invoke(0.85f);
             editorGame.Init(environment);
             editorGame.BeginNewGame();
